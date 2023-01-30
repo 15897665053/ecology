@@ -26,6 +26,7 @@ public class Glg_Cust_jxkhJob_v7 extends BaseCronJob {
         log.info("执行定时任务完成！");
 
     }
+    //11663
     //需要定时执行的代码块
     @Deprecated
     public void tiggerWorkflow(){
