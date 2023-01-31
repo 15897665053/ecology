@@ -29,6 +29,10 @@ public class QYWXTEST {
         {
             gh=gh+"|FX00001|FX00002|";
         }
+
+
+        int month = cal.get(Calendar.MONTH) ;
+        System.out.println(month);
         System.out.println(gh);
         //OA_purta();
         //System.out.println(prid);

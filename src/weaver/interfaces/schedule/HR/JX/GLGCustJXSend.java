@@ -16,7 +16,7 @@ import weaver.soa.workflow.request.RequestService;
 import java.util.Calendar;
 
 public class GLGCustJXSend extends BaseCronJob {
-    private Log log = LogFactory.getLog(Glg_Cust_jxkhJob_v7.class.getName());
+    private Log log = LogFactory.getLog(GLGCustJXSend.class.getName());
 
 
     @Override
@@ -40,7 +40,7 @@ public class GLGCustJXSend extends BaseCronJob {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         applyDate= formatter.format(cal.getTime());
-        int month = cal.get(Calendar.MONTH) + 1;
+        int month = cal.get(Calendar.MONTH) ;
         int year = cal.get(Calendar.YEAR);
         //获取khr信息
         RecordSet data = new RecordSet();
