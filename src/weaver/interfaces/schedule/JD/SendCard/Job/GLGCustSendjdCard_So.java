@@ -36,7 +36,7 @@ public class GLGCustSendjdCard_So extends BaseCronJob {
             log.info("请求企业微信生成Token！");
             String agentId = "1000025";
             RecordSet data = new RecordSet();
-
+            String title = "业务员接单情况";
 
             //采取markDown样式展示
 
@@ -45,15 +45,10 @@ public class GLGCustSendjdCard_So extends BaseCronJob {
                     " where a.agentId='" + agentId + "' ");
             String   gh = "";
             String token = "";
-            String inYearJe = "";
-            String outYearJe = "";
-            String inMonJe = "";
-            String outMonJe = "";
-            String inLastMonJe = "";
-            String outLastMonJe = "";
+
             String UserName = "";
 
-
+            String linkUlr = "http://wx.glgnet.cn:10023/view/JD/getYwInfo.html";
 
             if (data.getCounts() > 0) {
                 while (data.next()) {
@@ -70,12 +65,7 @@ public class GLGCustSendjdCard_So extends BaseCronJob {
                             " ");
 
                     while (ds.next()) {
-                        inYearJe = ds.getString("inYearJe");
-                        outYearJe = ds.getString("outYearJe");
-                        inMonJe = ds.getString("inMonJe");
-                        outMonJe = ds.getString("outMonJe");
-                        inLastMonJe = ds.getString("inLastMonJe");
-                        outLastMonJe = ds.getString("outLastMonJe");
+
                         UserName = ds.getString("username");
                         //根据用户名从HR获取对应工号信息
                         RecordSetDataSource hr = new RecordSetDataSource("HRSystem");
@@ -90,21 +80,15 @@ public class GLGCustSendjdCard_So extends BaseCronJob {
                         //推送消息.
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                        String applyDate = formatter.format(cal.getTime());
-                        String Content = "`您的接单数据请查收`\n>" +
-                                "**接单情况** \n>" +
-                                "姓名：<font color = \"info\">"+UserName+"万</font>\n>" +
-                                "本年接单金额：<font color = \"info\">"+inYearJe+"万</font>\n>" +
-                                "本年出货金额： <font color = \"warning\">" + outYearJe +"万</font>  \n>" +
-                                "本月接单金额：<font color = \"info\">"+inMonJe+"万</font>\n>" +
-                                "本月出货金额： <font color = \"warning\">" + outMonJe +"万</font>  \n>" +
-                                "上月接单金额：<font color = \"info\">"+inLastMonJe+"万</font>\n>" +
-                                "上月出货金额： <font color = \"warning\">" + outLastMonJe + "万</font>  \n>" +
-                                "统计日期： <font color = \"warning\">" + applyDate + "</font>  \n>\n>" +
-                                "深圳市方向电子股份有限公司";
+                        String applyDate= formatter.format(cal.getTime());
+                        String sendUrl= "";
+                        sendUrl = linkUlr +"?date="+applyDate+"&name="+UserName;
 
-
-                        String response = QYWXCommon.SendQywxMesageMarkDownandgh(Content, agentId, token, gh);
+                        String description = "<div class=\"gray\">"+applyDate+"</div> " +
+                                "<div class=\"normal\">"+UserName+"，您好！"+"</div>" +
+                                "<div class=\"highlight\">" +
+                                "今日接单情况，请您查收!</div>";
+                        String response = QYWXCommon.SendQywxMesageCardaddUrlandgh(sendUrl, title, description,agentId, token, gh);
 
                         log.info("业务员工号："+gh +"推送成功，企业微信返回信息为" + response);
                     }
