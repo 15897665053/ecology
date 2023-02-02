@@ -22,10 +22,13 @@ public class GLGCustJXSend extends BaseCronJob {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        log.info("执行定时任务开始！");
 
+        log.info("同步HR人员汇总部门信息开始");
+        HR_Emppurta();
+        log.info("同步HR人员汇总部门信息结束");
+        log.info("流程创建任务开始！");
         tiggerWorkflow();
-        log.info("执行定时任务完成！");
+        log.info("流程创建任务完成！");
 
     }
     //需要定时执行的代码块
@@ -423,6 +426,75 @@ public class GLGCustJXSend extends BaseCronJob {
 
         }
         return subcompanyid1;
+
+    }
+
+
+    @Deprecated
+    public void HR_Emppurta() {
+
+        try {
+
+            RecordSet data = new RecordSet();
+
+            data.executeSql("select  * from uf_GlgNet_jx_Emp ");
+
+
+
+
+
+            String  EmpNo="";
+            String  zjName="";
+            String  zwName="";
+            String  deptCode="";
+            String  G_ifsy="";
+
+            if (data.getCounts() > 0) {
+                while (data.next()) {
+
+
+                    EmpNo = data.getString("HRgh");
+                    //获取信息
+                    RecordSetDataSource ds = new RecordSetDataSource("HRSystem");
+                    ds.executeSql("select    *  from GlgHr_OAEmp a  where a.EmpNo='" +EmpNo+
+                            "' " );
+                    while (ds.next()) {
+                        zjName = ds.getString("zjName");
+                        zwName = ds.getString("zwName");
+                        deptCode = ds.getString("deptCode");
+                        G_ifsy = ds.getString("G_ifsy");
+
+                        RecordSet rs = new RecordSet();
+                        rs.executeSql(" update  uf_GlgNet_jx_Emp " +
+                                " set bmCode='" +deptCode+"' "+
+                                "," +
+                                "gw='"+zwName+ "'," +
+                                "zj='"+zjName+"'," +
+                                "ygzt='"+G_ifsy+"'," +
+                                "oabm= (select id from HrmDepartment  where departmentcode='"+deptCode+"'    and canceled is null)" +
+                                " " +
+                                "where HRgh='"+EmpNo+"'");
+
+
+
+                    }
+
+
+                }
+            }
+
+            log.info("同步绩效人员信息完成");
+
+
+
+
+
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            log.info("同步绩效人员数据完成");
+        }
 
     }
 
