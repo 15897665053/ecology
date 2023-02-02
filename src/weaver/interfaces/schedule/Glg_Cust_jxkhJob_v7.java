@@ -61,8 +61,7 @@ public class Glg_Cust_jxkhJob_v7 extends BaseCronJob {
             String  gh = data.getString("HRgh");
 
 
-            RecordSet userData = new RecordSet();
-            userData.executeSql(" select  * from  hrmresource where workcode= '" + gh + "'   ");
+
 
 
             //分部
@@ -96,12 +95,7 @@ public class Glg_Cust_jxkhJob_v7 extends BaseCronJob {
            String fbHostID= getfbhost(deptHostID);
             String hasOAID = "";
 
-            if (userData.getCounts() > 0) {
 
-                while (userData.next()) {
-                    userid = userData.getString("id");
-                }
-            }
             if(cpr == null || cpr .equals(""))
             {
                 hasOAID="1";

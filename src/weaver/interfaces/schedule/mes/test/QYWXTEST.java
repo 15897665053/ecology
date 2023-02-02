@@ -5,6 +5,7 @@ import com.ibm.icu.text.SimpleDateFormat;
 import weaver.conn.RecordSet;
 import weaver.conn.RecordSetDataSource;
 import weaver.interfaces.schedule.mes.helper.QYWXCommon;
+import weaver.monitor.cache.CacheFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class QYWXTEST {
         {
             gh=gh+"|FX00001|FX00002|";
         }
+
 
 
         int month = cal.get(Calendar.MONTH) ;

@@ -8,6 +8,7 @@ import weaver.conn.RecordSetDataSource;
 import weaver.conn.RecordSetTrans;
 import weaver.interfaces.schedule.BaseCronJob;
 import weaver.interfaces.schedule.Glg_Cust_jxkhJob_v7;
+import weaver.monitor.cache.CacheFactory;
 import weaver.soa.workflow.request.MainTableInfo;
 import weaver.soa.workflow.request.Property;
 import weaver.soa.workflow.request.RequestInfo;
@@ -29,6 +30,15 @@ public class GLGCustJXSend extends BaseCronJob {
         log.info("流程创建任务开始！");
         tiggerWorkflow();
         log.info("流程创建任务完成！");
+
+        //清除缓存
+       // CacheFactory sintance = CacheFactory.getInstance();
+
+
+
+      //  String[] tablename ={"formtable_main_xxx"};
+
+       // sintance.removeCache(tablename);
 
     }
     //需要定时执行的代码块
@@ -62,8 +72,7 @@ public class GLGCustJXSend extends BaseCronJob {
             String  gh = data.getString("HRgh");
 
 
-            RecordSet userData = new RecordSet();
-            userData.executeSql(" select  * from  hrmresource where workcode= '" + gh + "'   ");
+
 
 
             //分部
@@ -97,12 +106,7 @@ public class GLGCustJXSend extends BaseCronJob {
             String fbHostID= getfbhost(deptHostID);
             String hasOAID = "";
 
-            if (userData.getCounts() > 0) {
 
-                while (userData.next()) {
-                    userid = userData.getString("id");
-                }
-            }
             if(cpr == null || cpr .equals(""))
             {
                 hasOAID="1";
