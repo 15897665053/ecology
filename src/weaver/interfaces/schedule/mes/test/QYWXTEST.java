@@ -5,140 +5,103 @@ import com.ibm.icu.text.SimpleDateFormat;
 import weaver.conn.RecordSet;
 import weaver.conn.RecordSetDataSource;
 import weaver.interfaces.schedule.mes.helper.QYWXCommon;
+import weaver.interfaces.workflow.action.basehelper.ActivityCourse;
+import weaver.interfaces.workflow.action.basehelper.flowHelper;
+import weaver.interfaces.workflow.action.basehelper.sendMailHelper;
+import weaver.interfaces.workflow.action.basehelper.zip;
 import weaver.monitor.cache.CacheFactory;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message.RecipientType;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class QYWXTEST {
 
     public static void main(String args[]) throws Exception {
 
-        //String corpid="ww1088ebca78fcd50e";
-        //String secret="1h_p57LO1Qw-cF5HtUpTM-CgLw1M5-pLWaZVjzQ0jac";
-        //String ConverUrl = "https://image-pub.lexiang-asset.com/common/assets/wish/birthday_02_cover_img_1068x455.png";
-        //String LinkUrl="http://fx.glgnet.cn:8081/solist";
-        //String title = "公司接单金额汇总";
-
-        //String token= "SvWOVXiXjeKSSZgsIJQFcARdkd2JcaUkmlfrlTUP0FmpS7PBTZ9lAP7naOuKJfgUqQvDlPITyaeNJb4aBPRBEd38hJT-YTqkhYuP3tlELSZhRidKrjrVKdnjKhSQN6m5XnW5BtiVEg3bQzImrVA7ra_Y4kNEHNv-fu9mek10KsxD1hT2fHel-iUZpwFRC-zZ5xG_yWFEmkd7tEtBoerAGw";
-        //System.out.println(QYWXCommon.SendQywxMesageCardaddUrl(LinkUrl,title,"1000014",token));
-        String   gh = "FX11663|FX10324|FX04567";
-        Calendar cal = Calendar.getInstance();
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(isLastDayOfMonth(dateFormat.parse("2023-01-31")))
-        {
-            gh=gh+"|FX00001|FX00002|";
-        }
 
 
 
-        int month = cal.get(Calendar.MONTH) ;
-        System.out.println(month);
-        System.out.println(gh);
-        //OA_purta();
-        //System.out.println(prid);
+
+
+        List<ActivityCourse> courseList = new ArrayList<ActivityCourse>();
+
+        ActivityCourse course= new ActivityCourse();
+        course.filePath="D://WEAVER//test//test.zip";
+        course.fileName="imagefilename";
+        courseList.add(course);
+
+
+
+
+        sendEmail("smtp.qq.com","645266648@qq.com","nhihzhfxmjrtbbah","517363696@qq.com","研发图纸变更","测试发送邮件",courseList);
 
     }
 
 
-    public static void OA_purta() {
 
 
-        try {
+    public static void sendEmail(String Server,String serndUid,String sendPwd,String ToUid,String title,String Content, List<ActivityCourse> courseList) throws Exception {
+        /*
+         * 1. 得到session
+         */
+        Properties props = new Properties(); //创建配置对象
+        props.setProperty("mail.host", Server); // 配置邮箱服务，也就是邮箱地址，这里我用的163邮箱，所以地址就是smtp.163.com。你用哪个邮箱，你就百度搜一下它的服务地址，写在这就行
+        props.setProperty("mail.smtp.auth", "true"); //这里的true表示需要验证才能登录
 
-            String agentId = "1000022";
-            RecordSet data = new RecordSet();
-            String title = "";
-            String linkUlr = "http://fx.glgnet.cn:10012/view/XZ/QZ/GZdetail.aspx";
+        Authenticator auth = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(serndUid, sendPwd);
+            } // 这一步是创建认证对象，并配置上自己的用户名和密码。前者就写自己邮箱的全称，后者就是你刚才生成的那个口令
+        };
+        Session session = Session.getInstance(props, auth);// 这一步是把配置信息和认证信息传给了邮箱服务，并拿到了连接对象
 
-            data.executeSql("select  * from uf_wxqy_tokenRecord a " +
+        /*
+         * 2. 创建MimeMessage
+         */
+        MimeMessage msg = new MimeMessage(session);// 创建一封邮件
+        msg.setFrom(new InternetAddress(serndUid));//设置发件人
+        msg.setRecipients(RecipientType.TO, ToUid);//设置收件人，自己做测试，发件人用我的163邮箱，收件人用我的qq邮箱。。。RecipientType.TO表示发送给对方，RecipientType.CC表示抄送
+        msg.setSubject(title);//设置邮件主题
+        msg.setContent("哈哈哈哈", "text/html;charset=utf-8");//前者为邮件内容，想写啥写啥，后者为固定参数，不要改（设置了页面格式和编码）
 
-                    " where a.agentId='" + agentId + "' ");
-            String   gh = "";
-            String token = "";
-            String  Sessionid = "";
-            String  EmpId = "";
-            String  empName = "";
+        MimeMultipart list = new MimeMultipart();//创建内容列表
 
-            String  Memo = "";
-            String  DtName = "";
+        MimeBodyPart part1 = new MimeBodyPart();//创建内容对象
+        part1.setContent(Content, "text/html;charset=utf-8");//添加文本内容
+        list.addBodyPart(part1);//把上面有文本内容的部分添加到列表
 
-            if (data.getCounts() > 0) {
-                while (data.next()) {
-
-
-                    token = data.getString("token");
-                    //获取信息
-                    RecordSetDataSource ds = new RecordSetDataSource("HRSystem");
-                    ds.executeSql("  select b.Code gh,a.SessionID ,a.EmpId,b.Name empName,s.Memo+'工资' as bt," +
-                            "s.Memo,D.name DtName from Gz_Total a  " +
-                            " inner  join ZlEmployee   b  " +
-                            " on a.EmpID =b.ID " +
-                            "left join zldept D on a.dept=D.code AND (ISNULL(D.IFSEE,0)=0) " +
-                            " left join S_Session S On a.SessionID=S.ID " +
-                            " where  a.qrState =0   " +
-
-
-                            " " );
-                    while (ds.next()) {
-                        gh = ds.getString("gh");
-
-                        Sessionid = ds.getString("SessionID");
-
-                        EmpId =   ds.getString("EmpId");
-                        title =   ds.getString("bt");
-                        Memo  =   ds.getString("Memo");
-                        empName  =   ds.getString("empName");
-                        DtName  =   ds.getString("DtName");
-
-                        linkUlr = linkUlr+"?Memo="+Memo;
-
-                        //推送消息.
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                        String applyDate= formatter.format(cal.getTime());
-
-                        String description = "<div class=\"gray\">"+applyDate+"</div> " +
-                                "<div class=\"normal\">部门："+DtName+"</div>" +
-                                "<div class=\"normal\">姓名："+empName+"</div>" +
-                                "<div class=\"normal\">工号："+gh+"</div>" +
-
-
-
-
-                                "<div class=\"highlight\">" +
-                                "您有一份工资单待确认，请尽快确认!</div>";
-                        String response = QYWXCommon.SendQywxMesageCardaddUrlandgh(linkUlr, title, description,agentId, token, gh);
-                        RecordSetDataSource hr = new RecordSetDataSource("HRSystem");
-                        hr.executeSql(" update Gz_Total set qywxSendTime ='" +
-                                "'  " +
-                                "where  EmpId  '" +EmpId+"' and Sessionid='"+Sessionid+
-                                "' " );
-
-
-                    }
-
-
-                }
-            }
-
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-
+        //添加附件
+        for (ActivityCourse cur: courseList
+             ) {
+            MimeBodyPart part2 = new MimeBodyPart();//创建内容对象2
+            part2.attachFile(new File(cur.filePath));//要添加文件的绝对路径
+            list.addBodyPart(part2);//把这一部分添加到列表中
         }
 
-    }
-    public static boolean isLastDayOfMonth(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
-        if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-            return true;
-        }
-        return false;
-    }
 
+        msg.setContent(list);//设置邮件内容，内容就是刚才创建的列表
+
+        /*
+         * 3. 发送
+         */
+        Transport.send(msg);//调用方法完成发送
+        System.out.println("发送完成");
+    }
 }
+
+

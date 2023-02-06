@@ -31,6 +31,7 @@ public class GLGCustSendEmpKQTx  extends BaseCronJob {
             String agentId = "1000022";
             RecordSet data = new RecordSet();
             String title = "";
+            // 跳转地址
             String linkUlr = "http://wx.glgnet.cn:10023/view/XZ/QZ/kqqr.aspx";
 
             data.executeSql("select  * from uf_wxqy_tokenRecord a " +
