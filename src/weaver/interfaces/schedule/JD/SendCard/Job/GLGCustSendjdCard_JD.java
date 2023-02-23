@@ -34,8 +34,11 @@ public class GLGCustSendjdCard_JD extends BaseCronJob {
             log.info("请求企业微信生成Token！");
             String agentId = "1000025";
             RecordSet data = new RecordSet();
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String applyDate= formatter.format(cal.getTime());
             String title = "接单金额汇总";
-            String linkUlr="http://wx.glgnet.cn:10023/view/JD/index.aspx" ;
+            String linkUlr="http://wx.glgnet.cn:10023/view/JD/index.aspx?date="+applyDate ;
 
 
             data.executeSql("select  * from uf_wxqy_tokenRecord a " +

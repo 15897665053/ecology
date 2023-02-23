@@ -4,6 +4,7 @@ import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 import weaver.conn.RecordSet;
 import weaver.conn.RecordSetDataSource;
+import weaver.interfaces.schedule.HR.QyWX.Common.GLGNet_QYWXCommon;
 import weaver.interfaces.schedule.mes.helper.QYWXCommon;
 import weaver.interfaces.workflow.action.basehelper.ActivityCourse;
 import weaver.interfaces.workflow.action.basehelper.flowHelper;
@@ -32,22 +33,14 @@ public class QYWXTEST {
 
     public static void main(String args[]) throws Exception {
 
+        String date= GLGNet_QYWXCommon.dateToStamp("2023-02-17 07:51:40");
+        System.out.println(date);
+
+        String s="1676591500";
+        String date1=GLGNet_QYWXCommon.stampToDate(s);
+        System.out.println(date1);
 
 
-
-
-
-        List<ActivityCourse> courseList = new ArrayList<ActivityCourse>();
-
-        ActivityCourse course= new ActivityCourse();
-        course.filePath="D://WEAVER//test//test.zip";
-        course.fileName="imagefilename";
-        courseList.add(course);
-
-
-
-
-        sendEmail("smtp.qq.com","645266648@qq.com","nhihzhfxmjrtbbah","517363696@qq.com","研发图纸变更","测试发送邮件",courseList);
 
     }
 

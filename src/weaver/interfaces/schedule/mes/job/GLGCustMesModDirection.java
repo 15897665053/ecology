@@ -18,9 +18,9 @@ public class GLGCustMesModDirection extends BaseCronJob {
 
 
 
-        log.info("冲压自动绑定工作流！");
+        log.info("冲压计算寿命！");
         OA_purta();
-        log.info("注塑自动绑定工作流！");
+        log.info("注塑计算寿命！");
         OA_purta1();
         log.info("执行定时任务完成！");
 
@@ -62,7 +62,7 @@ public class GLGCustMesModDirection extends BaseCronJob {
 
 
         try {
-            //注塑模具到达15亿模次或使用15年系统自动进行模具报废
+            //注塑模具到达模次寿命或使用20年系统自动进行模具报废
             RecordSetDataSource ds = new RecordSetDataSource("MES");
             ds.executeSql(" update ModMould set State='MouldState_Scrapped',IsScrap=1 from  ModMould" +
                     " where (DATEDIFF(YEAR, OpenMouldDate, GETDATE()) >= 20 or CurrentLife>=Life)" +

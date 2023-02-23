@@ -52,12 +52,22 @@ public class GLGCustSendjdCard_YC extends BaseCronJob {
             if (data.getCounts() > 0) {
                 while (data.next()) {
 
+                    RecordSet RS = new RecordSet();
+                    RS.executeSql(" select * from uf_qywx_YC_ry  where  sfqy =0 and lx=0  ");
+                    while(RS.next())
+                    {
+                        if(gh.equals("")) {
+                            gh = RS.getString("hrgh");
+                        }else{
 
+                            gh=gh +"|"+RS.getString("hrgh");
+                        }
+                    }
                     token = data.getString("token");
                     //获取信息
 
 
-                    gh ="FX00001|FX00002|FX10324|FX00002|FX02607|FX00055|FX04340";
+
                     log.info("工号" + gh);
 
 
