@@ -6,6 +6,7 @@ import java.util.Calendar;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ibm.icu.text.SimpleDateFormat;
+import weaver.conn.RecordSet;
 
 
 public class QYWXCommon {
@@ -183,7 +184,18 @@ public class QYWXCommon {
         String Url="https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token;
         Calendar cal = Calendar.getInstance();
 
-        String User="FX00001|FX00002|FX10324|FX00153|FX03272";
+        String User="";
+        RecordSet RS = new RecordSet();
+        RS.executeSql(" select * from uf_qywx_YC_ry  where  sfqy =0 and lx=2  ");
+        while(RS.next())
+        {
+            if(User.equals("")) {
+                User = RS.getString("hrgh");
+            }else{
+
+                User=User +"|"+RS.getString("hrgh");
+            }
+        }
 
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

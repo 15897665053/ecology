@@ -33,12 +33,15 @@ public class QYWXTEST {
 
     public static void main(String args[]) throws Exception {
 
-        String date= GLGNet_QYWXCommon.dateToStamp("2023-02-17 07:51:40");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String applyDate= formatter.format(cal.getTime());
+        String date= GLGNet_QYWXCommon.dateToStamp(applyDate);
         System.out.println(date);
 
         String s="1676591500";
         String date1=GLGNet_QYWXCommon.stampToDate(s);
-        System.out.println(date1);
+        System.out.println(applyDate);
 
 
 

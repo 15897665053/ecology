@@ -38,7 +38,7 @@ public class GLGCustSendjdCard_JD extends BaseCronJob {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String applyDate= formatter.format(cal.getTime());
             String title = "接单金额汇总";
-            String linkUlr="http://wx.glgnet.cn:10023/view/JD/index.aspx?date="+applyDate ;
+            String linkUlr="http://wx.glgnet.cn:10023/view/JD/index.aspx?date="+applyDate;
 
 
             data.executeSql("select  * from uf_wxqy_tokenRecord a " +
