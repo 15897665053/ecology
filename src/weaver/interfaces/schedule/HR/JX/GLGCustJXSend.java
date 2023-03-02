@@ -44,7 +44,7 @@ public class GLGCustJXSend extends BaseCronJob {
     //需要定时执行的代码块
     @Deprecated
     public void tiggerWorkflow(){
-        String workflowId = "1348";// 流程id
+        String workflowId = "1369";// 流程id
 
         String userName ="";//申请人名称
         String applyDate="";//申请日期

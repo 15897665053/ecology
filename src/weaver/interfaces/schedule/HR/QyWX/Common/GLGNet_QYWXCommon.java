@@ -15,11 +15,11 @@ public class GLGNet_QYWXCommon {
         //获取标签里面的人员集合信息
         String Url="https://qyapi.weixin.qq.com/cgi-bin/tag/get?access_token="+token+"&tagid="+tagId+"";
         String response=httpPost.doGet(Url);
-        JSONObject jsonObject= (JSONObject) JSONObject.parse(response);
-        String userlist = jsonObject.getString("userlist");
+
+        return response;
 
 
-        return userlist;
+
 
     }
     /*
@@ -44,11 +44,10 @@ public class GLGNet_QYWXCommon {
 
 
         String response=httpPost.postJson(Url,josn).toString();
-        JSONObject jsonObject= (JSONObject) JSONObject.parse(response);
-        String checkindata = jsonObject.getString("checkindata");
 
 
-        return checkindata;
+
+        return response;
 
     }
 

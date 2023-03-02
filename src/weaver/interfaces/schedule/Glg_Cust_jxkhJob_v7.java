@@ -33,7 +33,7 @@ public class Glg_Cust_jxkhJob_v7 extends BaseCronJob {
     @Deprecated
     public void tiggerWorkflow(){
 
-        String workflowId = "1348";// 流程id
+        String workflowId = "1369";// 流程id
 
         String userName ="";//申请人名称
         String applyDate="";//申请日期

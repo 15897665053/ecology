@@ -36,12 +36,21 @@ public class QYWXTEST {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String applyDate= formatter.format(cal.getTime());
-        String date= GLGNet_QYWXCommon.dateToStamp(applyDate);
+        String date= GLGNet_QYWXCommon.dateToStamp("2023-02-10 08:41:00");
         System.out.println(date);
 
         String s="1676591500";
         String date1=GLGNet_QYWXCommon.stampToDate(s);
         System.out.println(applyDate);
+
+
+        //同步截至时间
+
+        Date date2= new Date();
+        cal.setTime(date2);
+        System.out.println(applyDate);
+        cal.add(Calendar.DATE,-20);
+        System.out.println(formatter.format(cal.getTime()));
 
 
 

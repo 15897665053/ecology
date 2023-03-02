@@ -269,7 +269,7 @@ public class GLGCustSetQYWXToken extends BaseCronJob {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            log.info("更新Token失败");
+            log.info("更新失败");
         }
 
     }
