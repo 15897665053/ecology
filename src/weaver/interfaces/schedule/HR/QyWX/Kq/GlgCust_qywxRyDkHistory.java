@@ -141,14 +141,14 @@ public class GlgCust_qywxRyDkHistory extends BaseCronJob {
                     //如打卡状态为未打卡 则不写入系统
                 if(exception_type.equals("未打卡"))
                 {
-                        return;
+                        continue;
                 }
                 else{
                         //根据用户，打卡时间组合判断此条记录是否在中间表是否已有同步记录，如果存在则跳过
 
                     if(ifHashistory(empId,GLGNet_QYWXCommon.stampToDate(checkin_time)))
                     {
-                        return;
+                        continue;
                     }else {
                         //将打卡记录数据写入记录表中
                         //企业微信使用虚拟打卡机进行记录数据 卡机编码28
@@ -169,8 +169,8 @@ public class GlgCust_qywxRyDkHistory extends BaseCronJob {
 
                     }
                 }
-
-
+            
+            tbDktime(tagId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -208,13 +208,23 @@ public class GlgCust_qywxRyDkHistory extends BaseCronJob {
 
         RecordSetDataSource Hrdata = new RecordSetDataSource("HRSystem");
         Hrdata.executeSql("select  * from  WXKq_Source  where EmpID='"+userId+"'" +
-                " and FDateTime ='" +dKTime+"'"+
+                " and convert(nvarchar(20),FDateTime,120)   = '"+dKTime+"'"+
                 "");
         if (Hrdata.getCounts() > 0) {
            return  true;
         }
         return  false;
 
+    }
+
+    //同步上下班打卡数据到HR系统
+    public  void  tbDktime(String  tagId)
+    {
+        RecordSetDataSource Hrdata = new RecordSetDataSource("HRSystem");
+        Hrdata.executeSql(" insert into Kq_Source(FDateTime,CardNo,MachNo,EmpID,FType,card,wid)" +
+                " select FDateTime,CardNo,MachNo,EmpID,FType,ID,wid from WXKq_Source a "+
+                " where a.ID not in (select card id from Kq_Source where card is not null ) and wid='" +tagId+"'"+
+                " ");
     }
 
 }

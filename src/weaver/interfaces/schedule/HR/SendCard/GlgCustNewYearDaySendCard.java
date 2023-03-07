@@ -59,7 +59,9 @@ public class GlgCustNewYearDaySendCard extends BaseCronJob {
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String applyDate= formatter.format(cal.getTime());
-
+                    RecordSetDataSource Hrdata = new RecordSetDataSource("HRSystem");
+                    Hrdata.executeSql("select  Code from ZlEmployee  where Sex=1 and State=0" +
+                            "");
 
 
 
@@ -69,7 +71,7 @@ public class GlgCustNewYearDaySendCard extends BaseCronJob {
 
                         String ConverUrl = "https://image-pub.lexiang-asset.com/common/assets/wish/welcome_new_year_1068_455.jpg";
                         String LinkUrl="http://wx.glgnet.cn:10023/view/sendCard/NewYearDay/index.html";
-                        title = "方向电子祝您元旦快乐";
+                        title = "方向电子祝您女神节快乐";
                         String desc=applyDate;
                         //推送消息.
                         String response= QYWXCommon.SendQywxBirthdayMesage(LinkUrl,ConverUrl,desc,agentId,token,title,EmpNo);

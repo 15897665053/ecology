@@ -66,7 +66,8 @@ public class GLGCustQYWXtb extends BaseCronJob {
 
         try {
 
-            String linkUlr = "http://192.168.0.33:10022/api/wxApi/addUser.api";
+            String linkUlr = "" +
+                    "";
 
             String response= httpPost.doGet(linkUlr);
             log.info("添加用户完成！");

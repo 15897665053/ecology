@@ -55,7 +55,7 @@ public class glgnet_hyQYWXsendMsgTX extends weaver.interfaces.workflow.action.Ba
 
 
         try {
-            //判断部门是否已经生成绩效考核汇总信息
+            //获取参会人员
              RecordSet data = new RecordSet();
             data.executeSql("select workcode from  hrmresource  a " +
 
@@ -76,7 +76,7 @@ public class glgnet_hyQYWXsendMsgTX extends weaver.interfaces.workflow.action.Ba
 
             }
 
-
+            //获取企业微信通token,采取定时刷新token,复用避免频繁调用获取token,导致接口请求失败
             String agentId = "1000032";
             RecordSet rs = new RecordSet();
             rs.executeSql("select  * from uf_wxqy_tokenRecord a " +
